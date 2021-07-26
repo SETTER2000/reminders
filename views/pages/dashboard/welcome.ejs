@@ -1,0 +1,149 @@
+<div id="welcome" >
+    <div class="container">
+        <h1>Welcome!</h1>
+        <hr/>
+        <p>This is a page that only registered users can visit. Don't you feel special? Try adding a reminder for
+            yourself, click the button below.</p>
+        <div class="buttons">
+            <button class="btn btn-info" @click="clickOpenExampleModalButton()">Reminder text</button>
+        </div>
+
+        <div class="row my-5" v-if="editList.length>0">
+            <div class="col">
+                <template>
+                    <el-table
+                            ref="filterTable"
+                            :row-class-name="tableRowClassName"
+                            :data="editList.filter(data => !search || data.lastName.toLowerCase().includes(search.toLowerCase()) || data.dateBirth.toLowerCase().includes(search.toLowerCase()))"
+                            :default-sort="{prop: 'lastName', order: 'descending'}"
+                            max-height="650"
+                            lazy
+                            :load="load"
+                            :tree-props="{domains: 'domains'}"
+                            style="width: 100%">
+
+                        <el-table-column
+                                label="#"
+                                type="index"
+                                fixed="left"
+                                width="35">
+                        </el-table-column>
+
+
+                        <el-table-column
+                                label="Text"
+                                sortable
+                                prop="lastName">
+                            <template slot-scope="scope">
+                                {{scope.row.lastName}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="Date"
+                                sortable
+                                prop="dateBirth"
+                                width="198">
+                            <template slot-scope="scope">
+                                <div class="d-flex align-content-center justify-content-md-between">
+                                    <div><i class="el-icon-date"></i>
+                                        {{scope.row.dateBirth | dateF('en','MMM DD, YYYY')}}
+                                    </div>
+                                    <div><i class="el-icon-time"></i>
+                                        {{scope.row.dateBirth | dateF('en','hh:mm A')}}
+                                    </div>
+                                </div>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column align="right">
+                            <template slot="header" slot-scope="scope">
+                                <el-input
+                                        v-model="search"
+                                        size="small"
+                                        placeholder="Start writing note text..."
+                                        clearable/>
+                            </template>
+                            <template slot-scope="scope">
+
+                                <el-button
+                                        size="mini"
+                                        @click="handleEdit(scope.$index, scope.row)">
+                                    Edit
+                                </el-button>
+                                <el-button
+                                        size="mini"
+                                        type="danger"
+                                        @click="openRemoveDialog(scope.row.id)"
+                                >Delete
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </template>
+            </div>
+        </div>
+        <div v-else class="d-flex justify-content-center">
+            <div style="color: #E6A23C; opacity:.4">You will receive a notification at the specified time.</div>
+        </div>
+    </div>
+
+
+    <router-view></router-view>
+
+    <modal class="example-modal" v-if="modal==='example'" @close="closeExampleModal()" v-cloak>
+        <div class="modal-header">
+            <h2 class="modal-title">Reminder</h2>
+            <p>At the specified time, you will receive a message to the mail specified during registration.</p>
+            <hr/>
+            <button type="button" class="modal-close-button" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+                <div class="form-group">
+                    <h5 class="section-heading">Reminder text</h5>
+                    <el-form-item prop="lastName">
+                        <el-input
+                                v-model="ruleForm.lastName"
+                                maxlength="120"
+                                placeholder="I need to call Alex"
+                                autocomplete="name"
+                                show-word-limit
+                                focus-first
+                                clearable
+                        ></el-input>
+                    </el-form-item>
+                    <div class="invalid-feedback" v-if="ruleForm.lastName">Please enter your message.</div>
+                </div>
+                <div class="form-group">
+                    <!--                    <h5 class="section-heading">Напомнить</h5>-->
+                    <div class="block">
+                        <el-form-item label="Date" prop="dateBirth">
+                            <el-date-picker
+                                    v-model="ruleForm.dateBirth"
+                                    type="datetime"
+                                    :picker-options="pickerOptions"
+                                    default-time="08:00:00"
+                                    placeholder="Select date & time"
+                            >
+                            </el-date-picker>
+                        </el-form-item>
+                    </div>
+                </div>
+                <el-row type="flex" justify="center">
+                    <div class="my-3 pt-4 text-center hidden-xs-only">
+                        <el-form-item>
+                            <button type="button" data-dismiss="modal" class="btn btn-outline-info mr-3">Close</button>
+                            <el-button v-if="!buttonUpdate" type="primary"
+                                       @click="submitForm('ruleForm')"><%= __('Save') %></el-button>
+                            <el-button v-else type="primary"
+                                       @click="submitForm('ruleForm')"><%= __('Update') %></el-button>
+                        </el-form-item>
+                    </div>
+                </el-row>
+            </el-form>
+        </div>
+        <div class="modal-footer flex-row-reverse justify-content-between">
+        </div>
+    </modal>
+</div>
+<%- /* Expose locals as `window.SAILS_LOCALS` :: */ exposeLocalsToBrowser() %>

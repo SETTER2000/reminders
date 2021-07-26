@@ -1,0 +1,50 @@
+{
+  "name": "std",
+  "private": true,
+  "version": "0.0.14",
+  "description": "a Sails application",
+  "keywords": [],
+  "dependencies": {
+    "@sailshq/connect-redis": "^3.2.1",
+    "@sailshq/lodash": "^3.10.3",
+    "@sailshq/socket.io-redis": "^5.2.0",
+    "mailgun-js": "^0.22.0",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.28",
+    "node-schedule": "^2.0.0",
+    "sails": "^1.2.3",
+    "sails-hook-apianalytics": "^2.0.3",
+    "sails-hook-organics": "^0.16.0",
+    "sails-hook-orm": "^2.1.1",
+    "sails-hook-sockets": "^2.0.0"
+  },
+  "devDependencies": {
+    "@sailshq/eslint": "^4.19.3",
+    "@sailshq/htmlhint": "^0.9.16",
+    "@sailshq/lesshint": "^4.6.6",
+    "ajv": "^6.9.1",
+    "grunt": "^1.0.4",
+    "grunt-contrib-jst": "1.0.0",
+    "grunt-sync": "0.8.0",
+    "mocha": "^6.1.4",
+    "sails-hook-grunt": "^4.0.1",
+    "supertest": "4.0.2"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node app.js",
+    "test": "npm run lint && npm run custom-tests && echo 'Done.'",
+    "lint": "eslint . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look so good.' && ./node_modules/htmlhint/bin/htmlhint -c ./.htmlhintrc views/*.ejs && ./node_modules/htmlhint/bin/htmlhint -c ./.htmlhintrc views/**/*.ejs && ./node_modules/htmlhint/bin/htmlhint -c ./.htmlhintrc views/**/**/*.ejs && ./node_modules/htmlhint/bin/htmlhint -c ./.htmlhintrc views/**/**/**/*.ejs && ./node_modules/htmlhint/bin/htmlhint -c ./.htmlhintrc views/**/**/**/**/*.ejs && ./node_modules/htmlhint/bin/htmlhint -c ./.htmlhintrc views/**/**/**/**/**/*.ejs && ./node_modules/htmlhint/bin/htmlhint -c ./.htmlhintrc views/**/**/**/**/**/**/*.ejs && echo '✔  So do your .ejs files.' && ./node_modules/lesshint/bin/lesshint assets/styles/ --max-warnings=0 && echo '✔  Your .less files look good, too.'",
+    "custom-tests": "node ./node_modules/mocha/bin/mocha",
+    "deploy": "bash bin/my_deploy.sh"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/anonymous node/sails user/std.git"
+  },
+  "author": "anonymous node/sails user",
+  "license": "",
+  "engines": {
+    "node": "^12.16"
+  }
+}
