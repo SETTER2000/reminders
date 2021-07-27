@@ -1,0 +1,16 @@
+version: '3.10'
+services:
+  web:
+    build: .
+    ports:
+      - "8081:1337"
+    links:
+      - redis
+    container_name: reminders
+  redis:
+    image: redis
+    restart: always
+    container_name: redis
+    working_dir: /opt
+    ports:
+      - "6379:6379"
