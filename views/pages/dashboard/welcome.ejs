@@ -14,8 +14,8 @@
                     <el-table
                             ref="filterTable"
                             :row-class-name="tableRowClassName"
-                            :data="editList.filter(data => !search || data.lastName.toLowerCase().includes(search.toLowerCase()) || data.dateBirth.toLowerCase().includes(search.toLowerCase()))"
-                            :default-sort="{prop: 'lastName', order: 'descending'}"
+                            :data="editList.filter(data => !search || data.reminder.toLowerCase().includes(search.toLowerCase()) || data.dateBirth.toLowerCase().includes(search.toLowerCase()))"
+                            :default-sort="{prop: 'reminder', order: 'descending'}"
                             max-height="650"
                             lazy
                             :load="load"
@@ -33,9 +33,9 @@
                         <el-table-column
                                 label="Text"
                                 sortable
-                                prop="lastName">
+                                prop="reminder">
                             <template slot-scope="scope">
-                                {{scope.row.lastName}}
+                                {{scope.row.reminder}}
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -101,9 +101,9 @@
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
                 <div class="form-group">
                     <h5 class="section-heading">Reminder text</h5>
-                    <el-form-item prop="lastName">
+                    <el-form-item prop="reminder">
                         <el-input
-                                v-model="ruleForm.lastName"
+                                v-model="ruleForm.reminder"
                                 maxlength="120"
                                 placeholder="I need to call Alex"
                                 autocomplete="name"
@@ -112,7 +112,7 @@
                                 clearable
                         ></el-input>
                     </el-form-item>
-                    <div class="invalid-feedback" v-if="ruleForm.lastName">Please enter your message.</div>
+                    <div class="invalid-feedback" v-if="ruleForm.reminder">Please enter your message.</div>
                 </div>
                 <div class="form-group">
                     <!--                    <h5 class="section-heading">Напомнить</h5>-->

@@ -23,9 +23,7 @@ parasails.registerPage('welcome', {
     cloudError: '',
     buttonUpdate: false,
     ruleForm: {
-      patronymicName: '',
-      firstName: '',
-      lastName: 'Я возвращаю ваш портре-еееет!',
+      reminder: 'Я возвращаю ваш портре-еееет!',
       domains: [{
         key: 1,
         value: '',
@@ -35,11 +33,10 @@ parasails.registerPage('welcome', {
       email: ''
     },
     rules: {
-
       dateBirth: [
         {required: true, message: 'Когда прислать уведомление? Дата обязательна.', trigger: 'blur'}
       ],
-      lastName: [
+      reminder: [
         {required: true, message: 'Текст уведомления обязательно.', trigger: 'blur'},
         {min: 3, max: 150, message: 'Длина должна быть от 3 до 150 зн.', trigger: 'blur'}
       ],

@@ -1,16 +1,10 @@
-/**
- * Local environment settings
- *
- * Use this file to specify configuration settings for use while developing
- * the app on your personal system.
- *
- * For more information, check out:
- * https://sailsjs.com/docs/concepts/configuration/the-local-js-file
- */
-
 module.exports = {
+  mailgun:{
+    host:'api.eu.mailgun.net',
+    domain:'kino2000.ru',
+    token: 'key-9e8183640d8f988c7b64d967910969a1'
+  }
 
-  // Any configuration settings may be overridden below, whether it's built-in Sails
-  // options or custom configuration specifically for your app (e.g. Stripe, Mailgun, etc.)
+
 
 };
