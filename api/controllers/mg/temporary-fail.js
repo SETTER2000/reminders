@@ -38,10 +38,6 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     const req = this.req;
-
-    console.log(inputs);
-
-    let p = {foo: 'Ono-111'}
     return exits.success(p);
   }
 };

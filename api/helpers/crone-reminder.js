@@ -12,17 +12,21 @@ module.exports = {
       type: 'string'
     },
     reminder: {
-      type: 'string'
+      type: 'string',
+      description: 'Сообщение-напоминалка'
     },
     to: {
       type: 'string',
-      example: 'admin@example.com'
+      example: 'admin@example.com',
+      description: 'Email получателя'
     },
     id: {
-      type: 'string'
+      type: 'string',
+      description: 'Идентификатор сообщения'
     },
     userId: {
-      type: 'string'
+      type: 'string',
+      description: 'Идентификатор пользователя'
     },
   },
 
@@ -44,30 +48,23 @@ module.exports = {
       start: startTime,
       end: endTime,
       rule: '*/10 * * * * *'
-    }
+    };
 
     range = sails.config.reminderCron.repeat ? range : startTime
 
     job = await schedule.scheduleJob(range, async () => {
 
-      let result = await sails.helpers.mailgunSend.with({
-        reminder: inputs.reminder,
-        to: inputs.to
-      })
+      let result = await sails.helpers.mailgunSend(inputs)
       console.log('result mailgun: ', result)
       if (result) {
         job.cancel()
-        await Student.destroy({id: inputs.id});
-        let user = await User.findOne({'id': inputs.userId}).populate('reminders');
-        await sails.sockets.broadcast(inputs.to, 'list-student', user.reminders);
+
       }
 
-      console.info(`reminder: отправлено на ${inputs.to} в `, moment().format('dddd,' +
-        ' MMMM' +
-        ' Do' +
-        ' YYYY, HH:mm:ss'));
-
-    })
+      console.info(
+        `reminder: отправлено на ${inputs.to} в `,
+        moment().format('dddd, MMMM Do YYYY, HH:mm:ss'));
+    });
 
 
     const job2 = schedule.scheduleJob(rule, function () {

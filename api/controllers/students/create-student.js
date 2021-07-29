@@ -56,8 +56,6 @@ module.exports = {
     const roomName = req.me.emailAddress
     await sails.sockets.join(socketId, roomName);
 
-    console.log(req.session.userId);
-
     let newObj = await Student.create({
       reminder: inputs.reminder,
       dateBirth: await sails.helpers.dateFix(inputs.dateBirth),
@@ -67,9 +65,6 @@ module.exports = {
     if (!newObj)
       console.error('Error объект с задачей не записался в БД!');
 
-    // console.log('newObj:: ', newObj)
-
-
     let res = await sails.helpers.croneReminder.with({
       date: newObj.dateBirth,
       reminder: newObj.reminder,
@@ -78,13 +73,11 @@ module.exports = {
       to: req.me.emailAddress
     })
 
-    console.log('croneReminder: ', res);
 
     if (!res) {
       throw 'badRequest';
     }
     await sails.sockets.broadcast(roomName, 'list-topic', res);
-
     return exits.success();
   }
 };

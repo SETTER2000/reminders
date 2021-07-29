@@ -8,12 +8,8 @@ module.exports = {
 
 
   inputs: {
-    reminder: {
-      type: 'string',
-      defaultsTo: 'Вам надо покрасить дом!',
-    },
-    to: {
-      type: 'string'
+    data:{
+      type:'ref'
     }
   },
 
@@ -23,8 +19,7 @@ module.exports = {
     const domain = sails.config.mailgun.domain;
     const host = sails.config.mailgun.host;
 
-
-    let result = false
+    let result = false;
     const mailgun = require('mailgun-js')(
       {
         apiKey: api_key,
@@ -34,9 +29,10 @@ module.exports = {
 
     const data = {
       from: `Reminders service <info@${domain}>`,
-      to: inputs.to,
+      to: inputs.data.to,
       subject: 'Reminder',
-      text: inputs.reminder
+      text: inputs.data.reminder,
+      "o:tag" : [inputs.data.id, inputs.data.to]
     };
 
     try {
@@ -45,15 +41,11 @@ module.exports = {
       result = result.length > 0
 
     } catch (err) {
-
-      console.error('error statusCode: ', err.statusCode);
+      console.error('Email not validate | statusCode: ', err.statusCode);
       return false
-
     }
 
-
     return result
-
   }
 };
 
