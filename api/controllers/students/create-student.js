@@ -51,27 +51,6 @@ module.exports = {
       throw 'badRequest';
     }
 
-    // const api_key = sails.config.mailgun.token;
-    // const domain = sails.config.mailgun.domain;
-    // const host = sails.config.mailgun.host;
-    // const mailgun = require('mailgun-js')(
-    //   {
-    //     apiKey: api_key,
-    //     domain: domain,
-    //     host: host
-    //   });
-    //
-    // const data = {
-    //   from: `Excited User <info@${domain}>`,
-    //   to: 'lphp@mail.ru',
-    //   subject: 'Hello',
-    //   text: 'Testing some Mailgun awesomeness!'
-    // };
-    //
-    // mailgun.messages().send(data, function (error, body) {
-    //   console.log(body);
-    // });
-
 
     const socketId = sails.sockets.getId(req);
     const roomName = req.me.emailAddress
@@ -93,7 +72,10 @@ module.exports = {
 
     let res = await sails.helpers.croneReminder.with({
       date: newObj.dateBirth,
-      reminder: newObj.reminder
+      reminder: newObj.reminder,
+      id:newObj.id,
+      userId:newObj.owner,
+      to: req.me.emailAddress
     })
 
     console.log('croneReminder: ', res);

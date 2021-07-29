@@ -18,6 +18,9 @@ module.exports = {
 
   fn: async function (inputs, exits) {
     const req = this.req;
+    if (!req.isSocket) {
+      throw 'badRequest';
+    }
     let student = await Student.findOne({
       id: inputs.id
     });

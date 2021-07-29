@@ -13,7 +13,17 @@ module.exports = {
     },
     reminder: {
       type: 'string'
-    }
+    },
+    to: {
+      type: 'string',
+      example: 'admin@example.com'
+    },
+    id: {
+      type: 'string'
+    },
+    userId: {
+      type: 'string'
+    },
   },
 
 
@@ -23,38 +33,45 @@ module.exports = {
     const rule = new schedule.RecurrenceRule();
     let date = moment(inputs.date).valueOf()
 
-    // console.log('MOMENT::: ', date)
-
     let job = false
     rule.minute = 5;
-    console.info('reminder: новое задание на ', moment(inputs.date).format('LLLL'));
-    // let x = () => 33 + 32
-    // job = schedule.scheduleJob(inputs.date, async function (y) {
-    //   d = await sails.helpers.mailgunSend(inputs.reminder)
-    //   if (d) {
-    //     console.log('mailgunSend: ', d);
-    //     console.info(`reminder: получил задание на ${inputs.date}, отработал в ${new Date()}`);
-    //   }
-    //
-    // }.bind(null, x));
+    console.info('reminder: новое задание на ', moment(inputs.date).format('dddd, MMMM Do YYYY, HH:mm:ss'));
 
     // Планируем диапазон отправки
     const startTime = new Date(date + 5000);
-    const endTime = new Date(startTime.getTime() + 1 * 60 * 1000);
-
-    job = await schedule.scheduleJob({
+    const endTime = new Date(startTime.getTime() + sails.config.reminderCron.minutes * 60 * 1000);
+    let range = {
       start: startTime,
       end: endTime,
       rule: '*/10 * * * * *'
-    }, async () => {
-      d = await sails.helpers.mailgunSend(inputs.reminder)
-      console.info('reminder: отправлено ', moment().format('dddd, MMMM Do' +
-        ' YYYY, hh:mm:ss'));
+    }
+
+    range = sails.config.reminderCron.repeat ? range : startTime
+
+    job = await schedule.scheduleJob(range, async () => {
+
+      let result = await sails.helpers.mailgunSend.with({
+        reminder: inputs.reminder,
+        to: inputs.to
+      })
+      console.log('result mailgun: ', result)
+      if (result) {
+        job.cancel()
+        await Student.destroy({id: inputs.id});
+        let user = await User.findOne({'id': inputs.userId}).populate('reminders');
+        await sails.sockets.broadcast(inputs.to, 'list-student', user.reminders);
+      }
+
+      console.info(`reminder: отправлено на ${inputs.to} в `, moment().format('dddd,' +
+        ' MMMM' +
+        ' Do' +
+        ' YYYY, HH:mm:ss'));
+
     })
 
 
     const job2 = schedule.scheduleJob(rule, function () {
-      console.log('crone-reminder - выполняюсь каждые 5 мин... ');
+      console.log('crone-reminder работает - выполняюсь каждые 5 мин... ');
     });
 
     return job ? true : job;

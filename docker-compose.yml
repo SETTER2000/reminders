@@ -1,9 +1,9 @@
 version: '3.10'
 services:
   app:
-    image: setter2000/reminders_web
+    image: reminders
     ports:
-      - "8080-8086:1337"
+      - "8081:1337"
     links:
       - redis
     restart: always

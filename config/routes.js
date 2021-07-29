@@ -63,7 +63,26 @@ module.exports.routes = {
   'POST  /api/v1/deliver-contact-form-message': {action: 'deliver-contact-form-message'},
 
 
-  'POST /api/v1/students/student': {action: 'students/create-student', csrf: false},
+  'POST /api/v1/students/student': {
+    action: 'students/create-student',csrf: false},
+  'POST /api/v1/mg/deliver': {
+    action: 'mg/deliver',
+    csrf: false,
+    cors: {
+      // allowOrigins: '*',
+      allowOrigins: ['http://kino2000.ru', 'https://app.mailgun.com', 'http://mailgun.com', ],
+      allowCredentials: false
+    }
+  },
+  'POST /api/v1/mg/temporary-fail': {
+    action: 'mg/temporary-fail',
+    csrf: false,
+    cors: {
+      // allowOrigins: '*',
+      allowOrigins: ['http://kino2000.ru', 'https://app.mailgun.com', 'http://mailgun.com', ],
+      allowCredentials: false
+    }
+  },
   'DELETE /api/v1/students/student': {action: 'students/destroy', csrf: false},
   'PUT /api/v1/students/student': {action: 'students/update-student', csrf: false},
   'GET  /api/v1/students/list': {action: 'students/list-student'},

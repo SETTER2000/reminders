@@ -23,7 +23,7 @@ parasails.registerPage('welcome', {
     cloudError: '',
     buttonUpdate: false,
     ruleForm: {
-      reminder: 'Я возвращаю ваш портре-еееет!',
+      reminder: 'Вам надо покрасить дом!',
       domains: [{
         key: 1,
         value: '',
