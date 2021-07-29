@@ -10,7 +10,6 @@ module.exports = {
     }
   },
 
-
   exits: {
     success: {
       outputDescription: 'Information about the newly created record.',
@@ -35,7 +34,6 @@ module.exports = {
     },
   },
 
-
   fn: async function (inputs, exits) {
     const crypto = require('crypto')
     const req = this.req;
@@ -56,7 +54,6 @@ module.exports = {
     }
 
     console.log('REQ: ', body)
-
     return exits.success();
   }
 };
