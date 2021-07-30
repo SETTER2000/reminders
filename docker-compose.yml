@@ -1,7 +1,7 @@
 version: '3.10'
 services:
   app:
-    image: reminders
+    image: setter2000/reminders
     ports:
       - "8081:1337"
     links:

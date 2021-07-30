@@ -255,7 +255,7 @@ module.exports = {
     //   'https://staging.example.com',
     // ],
 
-      onlyAllowOrigins: ["http://localhost", "http://www.student", "http://student"],
+      onlyAllowOrigins: ["http://localhost", "http://www.kino2000.ru", "http://kino2000.ru"],
 
 
 
